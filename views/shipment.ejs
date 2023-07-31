@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cantika Paint | Pengiriman Barang</title>
+    <%- include('partials/header') %>
+  </head>
+<body> 
+  <%- include('partials/navbar') %>
+    <div class="container">
+      <h1>Data Pengiriman</h1>
+        <form action="/pengiriman" method="get">
+          <div class="row g-1 mt-2 mb-3">
+            <div class="col-sm-1">
+              <label for="branchId" class="form-label">Cabang :</label>
+            </div>
+            <div class="col-md-2">
+              <% if (branchId == 0) { %>
+                <select class="form-control" id="branchId" name="branchId" >
+                    <option value="1">Cikampek</option>
+                    <option value="2">Klari</option>
+                    <option value="3">Wadas</option>
+                    <option value="4">Tanjung Pura</option>
+                    <option value="5">Rengasdengklok</option>
+                </select>
+                <% } else { %>
+                  <select class="form-control" id="branchId" name="branchId" disabled>
+                    <option value="<%= branchId  %>"><%= branch  %></option>
+                </select>
+                <% } %>
+            </div>
+          </div>
+          <div class="row g-1 mt-2 mb-3">
+            <div class="col-sm-1">
+              <label for="tanggal" class="form-label">Tanggal :</label>
+            </div>
+            <div class="col-md-2">
+              <input placeholder="dd-mm-yyyy" type="date" class="form-control" id="tanggal" name="tanggal" value="<%= tgl %>">
+            </div>
+          </div>
+            <button type="submit" class="btn btn-primary" style="width: 90px;">Lihat</button>
+        </form>
+        <form action="/pengiriman/add" method="post">
+          <input type="text" class="form-control" id="branch2" name="branch2" hidden>
+          <% if (branchId == 0) { %>
+            <select class="form-control" id="branchId2" name="branchId2" hidden>
+              <option value="1">Cikampek</option>
+              <option value="2">Klari</option>
+              <option value="3">Wadas</option>
+              <option value="4">Tanjung Pura</option>
+              <option value="5">Rengasdengklok</option>
+            </select>
+            <% } else { %>
+              <select class="form-control" id="branchId2" name="branchId2" hidden>
+                <option value="<%= branchId%>"><%= branch  %></option>
+            </select>
+            <% } %>
+          <input hidden type="date" value="<%=date()%>" class="form-control" id="tanggal2" name="tanggal2" required >
+          <button type="submit" class="btn btn-danger" style="margin-top: -66px; margin-left: 100px;">Tambah Pengiriman</button>
+        </form>
+        
+        <h1>Tabel Data Pengiriman </h1>
+            <table id="datatablesSale" class="table table-striped table-bordered text-center">
+                <thead class="text-center">
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Jenis</th>
+                        <th>Warna</th>
+                        <th>Stok</th>
+                        <th>Out</th>
+                        <th>Stok Akhir</th>
+                    </tr>
+                </thead>
+            <% if (shipment != "") { %>
+                <tbody class="table-group-divider">
+                    <% shipment.forEach(function(ship, index) { %>
+                        <tr>
+                            <input type="text" hidden id="idData" value="<%= ship.id %>" />
+                            <td><%= formatDate(ship.shipmentDate)%></td>
+                            <td><%= ship.item.type %></td>
+                            <td><%= ship.item.color %></td>
+                            <td><%= ship.stock %></td>
+                            <td><%= ship.out %></td>
+                            <td><%= ship.finalStock %></td>
+                        </tr>
+                    <% }); %>
+              <% } else { %>
+                        <tr>
+                          <td colspan="6">Tidak ada data pengiriman.</td>
+                        </tr>
+               <% } %>
+                </tbody>
+            </table>
+    </div>
+    <script>
+      const tanggalInput = document.getElementById('tanggal');
+      const tanggal2Input = document.getElementById('tanggal2');
+
+      tanggalInput.addEventListener('change', function() {
+          tanggal2Input.value = tanggalInput.value;
+      });
+    </script>
+    <script>
+      const branchInput = document.getElementById('branchId');
+      const branch2Input = document.getElementById('branchId2');
+
+      branchInput.addEventListener('change', function() {
+          branch2Input.value = branchInput.value;
+      });
+      const branchId2 = document.getElementById('branchId2');
+      const branch2 = document.getElementById('branch2');
+
+      // Mendapatkan teks opsi yang dipilih
+      const selectedText = branchId2.options[branchId2.selectedIndex].text;
+
+      // Menampilkan teks yang dipilih pada input
+      branch2.value = selectedText;
+    </script>
+    <%- include('partials/footer') %>
+</body>
+</html>
+<% function formatDate(date) {
+  const format = date.split('T');
+  const parts = format[0].split('-')
+  const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+  return formattedDate;
+} 
+function date() {
+    if(!tgl){
+      const today = new Date();
+      const year = today.getFullYear();
+      let month = today.getMonth() + 1;
+      let day = today.getDate();
+      if (month < 10) {
+          month = '0' + month;
+      }
+      if (day < 10) {
+          day = '0' + day;
+      }
+      return `${year}-${month}-${day}`;
+    }else{
+      return tgl
+    }
+
+}
+%>

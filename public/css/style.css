@@ -1,0 +1,13 @@
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+    scrollbar-width: none;
+}
+body {
+    margin-top: 60px;
+}
+@media (max-width: 912px) {
+    html, body {
+        overflow-x: scroll;
+    }
+  }
