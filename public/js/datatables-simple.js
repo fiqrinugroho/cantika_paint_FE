@@ -7,6 +7,11 @@ window.addEventListener('DOMContentLoaded', event => {
         new simpleDatatables.DataTable(datatablesSimple);
     }
 
+    const datatablesSimple2 = document.getElementById('datatablesSimple2');
+    if (datatablesSimple2) {
+        new simpleDatatables.DataTable(datatablesSimple2);
+    }
+
     const datatablesSale = document.getElementById('datatablesSale');
     if (datatablesSale) {
         new simpleDatatables.DataTable(datatablesSale, {
