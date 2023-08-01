@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,7 +10,7 @@
     <%- include('partials/navbar') %>
     <div class="container">
       <h1>Data Barang</h1>
-            <table id="datatablesSimple" class="table table-striped table-bordered text-center">
+            <table id="datatablesSimple" style="width:100%" class="table table-striped table-bordered text-center">
                 <thead class="text-center">
                     <tr>
                         <% if (branchId == 0) { %>
@@ -35,14 +35,12 @@
                         </tr>
                     <% }); %>
                     <% } else { %>
-                        <tr>
-                            <td>Tidak ada data barang.</td>
-                        </tr>
+
                     <% } %>
                 </tbody>
             </table>
             <h1>Data Penjualan </h1>
-            <table id="datatablesSimple2" class="table table-striped table-bordered text-center">
+            <table id="datatablesSimple2" class="table table-striped table-bordered text-center" style="width:100%">
                 <thead class="text-center">
                     <tr>
                         <% if (branchId == 0) { %>
@@ -73,9 +71,7 @@
                         </tr>
                     <% }); %>
                     <% } else { %>
-                        <tr>
-                            <td >Tidak ada data penjualan.</td>
-                        </tr>
+
                     <% } %>
                 </tbody>
             </table>

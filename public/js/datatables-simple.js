@@ -4,18 +4,28 @@ window.addEventListener('DOMContentLoaded', event => {
 
     const datatablesSimple = document.getElementById('datatablesSimple');
     if (datatablesSimple) {
-        new simpleDatatables.DataTable(datatablesSimple);
+        new DataTable(datatablesSimple,{
+            scrollX: true,
+            responsive: true,
+        });
+        
     }
-
     const datatablesSimple2 = document.getElementById('datatablesSimple2');
     if (datatablesSimple2) {
-        new simpleDatatables.DataTable(datatablesSimple2);
+        new DataTable(datatablesSimple2, {
+            scrollX: true,
+            responsive: true
+        });
     }
 
     const datatablesSale = document.getElementById('datatablesSale');
     if (datatablesSale) {
-        new simpleDatatables.DataTable(datatablesSale, {
-            searchable: false, });
+        new DataTable(datatablesSale, {
+            scrollX: true,
+            responsive: true,
+            searchable: false, 
+            paging: false
+        });
     }
     
 });
