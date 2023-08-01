@@ -50,7 +50,7 @@ router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   try {
     // Mengambil respons dari API menggunakan Axios
-    const response = await axios.post('http://localhost:3002/api/auth/login', { username, password });
+    const response = await axios.post(`${host}/api/auth/login`, { username, password });
     // Menyimpan data respons ke cookie
     res.cookie('token', response.data.data.accessToken);
     res.cookie('branchId', response.data.data.branchId);
@@ -276,6 +276,22 @@ router.post('/pengiriman/add', auth, (req, res) => {
     });
 });
 
+router.get('/dataBarang', async (req, res) => {
+  const token = req.cookies.token;
+  const branchId = req.cookies.branchId;
+  const branch = req.cookies.branch;
+  const username = req.cookies.username;
+    // Mengambil respons dari API menggunakan Axios
+    await axios.get(`${host}/api/item/branch/${branchId}`)
+    .then(response => {
+      // Menangani respons
+      res.render('dataBarang', { items: response.data.data, branch, branchId, username, token});
+    })
+    .catch(error => {
+        // Menangani kesalahan
+        res.render('dataBarang', { items: "", branch, branchId, username, token});
+      });
+});
 
 router.use('/', (req, res) => {
   res.render("404")

@@ -96,7 +96,7 @@ async function updateShipment() {
   const data = {
     add
   }
-  const update = await axios.put(`${host}/api/shipment/update/${id}`, data, {
+  await axios.put(`${host}/api/shipment/update/${id}`, data, {
     headers: {
       'Authorization': `Bearer ${token}`
     },

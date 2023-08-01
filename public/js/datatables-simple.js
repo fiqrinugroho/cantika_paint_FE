@@ -5,16 +5,27 @@ window.addEventListener('DOMContentLoaded', event => {
     const datatablesSimple = document.getElementById('datatablesSimple');
     if (datatablesSimple) {
         new DataTable(datatablesSimple,{
-            scrollX: true,
             responsive: true,
         });
         
     }
+
     const datatablesSimple2 = document.getElementById('datatablesSimple2');
     if (datatablesSimple2) {
         new DataTable(datatablesSimple2, {
-            scrollX: true,
             responsive: true
+        });
+    }
+
+    const datatablesBarang = document.getElementById('datatablesBarang');
+    if (datatablesBarang) {
+        new DataTable(datatablesBarang, {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ],
+            responsive: true,
+            paging: true 
         });
     }
 
@@ -22,9 +33,12 @@ window.addEventListener('DOMContentLoaded', event => {
     if (datatablesSale) {
         new DataTable(datatablesSale, {
             scrollX: true,
-            responsive: true,
-            searchable: false, 
-            paging: false
+            paging: false,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ],
+            searching: false
         });
     }
     
