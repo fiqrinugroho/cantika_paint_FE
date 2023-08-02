@@ -9,8 +9,18 @@
 <body>
     <%- include('partials/navbar') %>
     <div class="container">
-        <h1>Data Barang</h1>
-        <button class="btn btn-success mb-3">Tambah Data</button>
+        <% if (branchId == 0) { %>
+          <h1>Data Barang</h1>
+          <div class="col-md-5">
+            <div id="liveAlertPlaceholder" role="alert">
+          </div>
+          <button type="button" class="btn btn-md btn-success mb-3" 
+            data-bs-toggle="modal" data-bs-target="#addModal" 
+            >Tambah Data</button>
+        <% }else{ %>
+          <h1>Data Barang Toko <%=branch %></h1>
+        <% } %>
+          </div> 
               <table id="datatablesBarang" style="width:100%" class="table table-striped table-bordered text-center">
                   <thead class="text-center">
                       <tr>
@@ -36,12 +46,18 @@
                               <td><%= item.type %></td>
                               <td><%= item.color %></td>
                               <td><%= item.stock %></td>
+                              <% if (branchId == 0) { %>
                               <td>
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-id="<%=item.id%>" data-bs-data="<%=item.out%>">Edit</button>
+                                <button type="button" class="btn btn-sm btn-primary" 
+                                data-bs-toggle="modal" data-bs-target="#editModal" 
+                                data-bs-id="<%=item.id%>" data-bs-type="<%=item.type%>"
+                                data-bs-color="<%=item.color%>" data-bs-stock="<%=item.stock%>"
+                                >Edit</button>
                                 <a href="#" onclick="deleteData(`<%= item.id %>`,`/api/item/delete/`)" class="btn btn-danger btn-sm"
                                   >Delete</a
                                 >
                               </td>
+                              <% } %>
                           </tr>
                       <% }); %>
                       <% } else { %>
@@ -49,11 +65,11 @@
                       <% } %>
                   </tbody>
               </table>
-              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Data Penjualan</h1>
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Data Barang</h1>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -61,21 +77,26 @@
                         <div id="liveAlertPlaceholder2" role="alert">
                         </div>
                          <input type="text" class="form-control" id="edit-id" name="id" hidden>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <div class="col-sm-1">
                                 <label for="edit-type" class="col-form-label">Jenis:</label>
                             </div>
-                            <input type="text" class="form-control" name="type" id="edit-type">
-                        </div> 
-                        <div class="mb-3">
+                            <!-- <input type="text" class="form-control" name="type" id="edit-type"> -->
+                            <select class="form-control" id="edit-type" name="type" required>
+                              <option value="pro">Pro</option>
+                              <option value="super">Super</option>
+                              <option value="multi">Multi</option>
+                            </select>
+                          </div> 
+                        <div class="mb-2">
                           <div class="row g-1 mt-2">
                             <div class="col-sm-1">
-                              <label for="edit-color" class="col-form-label">Color:</label>
+                              <label for="edit-color" class="col-form-label">Warna:</label>
                             </div>
                               <input type="text" class="form-control" name="color" id="edit-color">
                           </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-2">
                           <div class="row g-1 mt-2">
                             <div class="col-sm-1">
                               <label for="edit-stock" class="col-form-label">Stok:</label>
@@ -86,7 +107,65 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" onclick="updateTransaction()" class="btn btn-primary">Update</button>
+                          <button type="button" onclick="updateDataBarang()" class="btn btn-primary">Update</button>
+                        </div>
+                      </form>
+                  </div>
+                </div>
+              </div>
+              <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="addModalLabel">Tambah Data Barang</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div id="liveAlertPlaceholderAdd" role="alert">
+                        </div>
+                        <div class="mb-2">
+                            <div class="col-sm-1">
+                                <label for="add-branch" class="col-form-label">Toko:</label>
+                            </div>
+                            <select class="form-control" id="add-branch" name="branch" required>
+                              <option value="1">Cikampek</option>
+                              <option value="2">Klari</option>
+                              <option value="3">Wadas</option>
+                              <option value="4">TanjungPura</option>
+                              <option value="5">Rengasdengklok</option>
+                            </select>
+                        </div> 
+                        <div class="mb-2">
+                            <div class="col-sm-1">
+                                <label for="add-type" class="col-form-label">Jenis:</label>
+                            </div>
+                            <select class="form-control" id="add-type" name="type" required>
+                              <option value="pro">Pro</option>
+                              <option value="super">Super</option>
+                              <option value="multi">Multi</option>
+                            </select>
+                        </div> 
+                        <div class="mb-2">
+                          <div class="row g-1 mt-2">
+                            <div class="col-sm-1">
+                              <label for="add-color" class="col-form-label">Warna:</label>
+                            </div>
+                              <input type="text" class="form-control" name="color" id="add-color">
+                          </div>
+                        </div>
+                        <div class="mb-2">
+                          <div class="row g-1 mt-2">
+                            <div class="col-sm-1">
+                              <label for="add-stock" class="col-form-label">Stok:</label>
+                            </div>
+                              <input type="text" class="form-control" name="stock" id="add-stock">
+                          </div>
+                        </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" onclick="addDataBarang()" class="btn btn-primary">Tambah</button>
                         </div>
                       </form>
                   </div>

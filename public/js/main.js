@@ -114,8 +114,92 @@ async function updateShipment() {
   });
 }
 
+async function addDataBarang() {
+  const cookiesString = document.cookie;
+  const cookiesArray = cookiesString.split(';');
+  let tokenValue = null;
+  cookiesArray.forEach(cookie => {
+    const [name, value] = cookie.trim().split('=');
+    if (name === "token") {
+      tokenValue = value;
+    }
+  });
+  const data = {
+    branchId: document.getElementById("add-branch").value,
+    type: document.getElementById("add-type").value,
+    color: document.getElementById("add-color").value,
+    stock: document.getElementById("add-stock").value,
+  };
+  console.log(data)
+  if (data.color == "" || data.stock == "") {
+    appendAlertAdd('Data Tidak Boleh Kosong', 'danger')
+  } else {
+    await axios.post(`${host}/api/item/add`, data, {
+      headers: {
+        'Authorization': `Bearer ${tokenValue}`
+      },
+    })
+    .then(response => {
+      appendAlertAdd('Berhasil Input Penjualan', 'success')
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    })
+    .catch(error => {
+      // console.error('Error:', error);
+      appendAlertAdd(error.response.data.message, 'danger')
+    });
+  }
+}
+
+async function updateDataBarang() {
+  const cookiesString = document.cookie;
+  const cookiesArray = cookiesString.split(';');
+  let tokenValue = null;
+  cookiesArray.forEach(cookie => {
+    const [name, value] = cookie.trim().split('=');
+    if (name === "token") {
+      tokenValue = value;
+    }
+  });
+  const id = document.getElementById("edit-id").value;
+  const color = document.getElementById("edit-color").value;
+  const type = document.getElementById("edit-type").value;
+  const stock = document.getElementById("edit-stock").value;
+  const data = {
+    color,
+    type,
+    stock,
+  }
+  await axios.put(`${host}/api/item/update/${id}`, data, {
+    headers: {
+      'Authorization': `Bearer ${tokenValue}`
+    },
+  })
+  .then(response => {
+    appendAlert2('Berhasil Update Data Barang', 'success')
+    setTimeout(() => {
+      window.history.back(); // Navigasi ke halaman sebelumnya
+      location.reload();
+    }, 500);
+  })
+  .catch(error => {
+    // console.error('Error:', error);
+    appendAlert2(error.response.data.message, 'danger')
+  });
+}
+
 async function deleteData(id, endPoint) {
-  const token = document.getElementById("token").value
+  const cookiesString = document.cookie;
+  const cookiesArray = cookiesString.split(';');
+
+  let token = null;
+  cookiesArray.forEach(cookie => {
+    const [name, value] = cookie.trim().split('=');
+    if (name === "token") {
+      token = value;
+    }
+  });
   const restAPI = await axios.delete(`${host}${endPoint}${id}`, {
     headers: {
       'Authorization': `Bearer ${token}`
@@ -190,6 +274,19 @@ async function changePassword() {
 }
 
 // fungsi untuk membuat alert
+const alertPlaceholderAdd = document.getElementById('liveAlertPlaceholderAdd')
+const appendAlertAdd = (message, type) => {
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = [
+    `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+    `   <div>${message}</div>`,
+    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+    '</div>',
+  ].join('')
+
+  alertPlaceholderAdd.append(wrapper)
+}
+
 const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 const appendAlert = (message, type) => {
   const wrapper = document.createElement('div')
