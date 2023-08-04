@@ -130,7 +130,7 @@ async function addDataBarang() {
     color: document.getElementById("add-color").value,
     stock: document.getElementById("add-stock").value,
   };
-  console.log(data)
+  
   if (data.color == "" || data.stock == "") {
     appendAlertAdd('Data Tidak Boleh Kosong', 'danger')
   } else {
@@ -178,6 +178,96 @@ async function updateDataBarang() {
   })
   .then(response => {
     appendAlert2('Berhasil Update Data Barang', 'success')
+    setTimeout(() => {
+      window.history.back(); // Navigasi ke halaman sebelumnya
+      location.reload();
+    }, 500);
+  })
+  .catch(error => {
+    // console.error('Error:', error);
+    appendAlert2(error.response.data.message, 'danger')
+  });
+}
+
+async function addDataUser() {
+  const cookiesString = document.cookie;
+  const cookiesArray = cookiesString.split(';');
+  let tokenValue = null;
+  cookiesArray.forEach(cookie => {
+    const [name, value] = cookie.trim().split('=');
+    if (name === "token") {
+      tokenValue = value;
+    }
+  });
+  const data = {
+    branchId: document.getElementById("add-branch").value,
+    fullName: document.getElementById("add-name").value,
+    username: document.getElementById("add-username").value,
+    password: document.getElementById("add-password").value,
+  };
+  
+  if (data.fullName == "" || data.username == "" || data.password == "") {
+    appendAlertAdd('Data Tidak Boleh Kosong', 'danger')
+  } else {
+    await axios.post(`${host}/api/auth/register`, data, {
+      headers: {
+        'Authorization': `Bearer ${tokenValue}`
+      },
+    })
+    .then(response => {
+      appendAlertAdd('Berhasil Register User Baru', 'success')
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    })
+    .catch(error => {
+      // console.error('Error:', error);
+      appendAlertAdd(error.response.data.message, 'danger')
+    });
+  }
+}
+
+async function updateDataUser() {
+  const cookiesString = document.cookie;
+  const cookiesArray = cookiesString.split(';');
+  let tokenValue = null;
+  cookiesArray.forEach(cookie => {
+    const [name, value] = cookie.trim().split('=');
+    if (name === "token") {
+      tokenValue = value;
+    }
+  });
+  const id = document.getElementById("edit-id").value;
+  const fullName = document.getElementById("edit-name").value;
+  const username = document.getElementById("edit-username").value;
+  const branchId = document.getElementById("edit-branch").value;
+  const roleId = document.getElementById("edit-role").value;
+  const password = document.getElementById("edit-password").value;
+  let data = null
+  if (password == ""){
+    data = {
+      fullName,
+      username,
+      branchId,
+      roleId,
+    }
+  }else{
+    data = {
+      fullName,
+      username,
+      branchId,
+      roleId,
+      password
+    }
+  }
+ 
+  await axios.put(`${host}/api/auth/editUser/${id}`, data, {
+    headers: {
+      'Authorization': `Bearer ${tokenValue}`
+    },
+  })
+  .then(response => {
+    appendAlert2('Berhasil Update User', 'success')
     setTimeout(() => {
       window.history.back(); // Navigasi ke halaman sebelumnya
       location.reload();

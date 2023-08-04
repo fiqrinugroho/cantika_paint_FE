@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cantika Paint ! Data User</title>
+    <%- include('partials/header') %>
+  </head>
+<body>
+    <%- include('partials/navbar') %>
+    <div class="container">
+        <h1>Data User</h1>
+          <div class="col-md-5">
+            <div id="liveAlertPlaceholder" role="alert">
+          </div>
+          <button type="button" class="btn btn-md btn-success mb-3" 
+            data-bs-toggle="modal" data-bs-target="#addModal" 
+            >Tambah User</button>
+          </div> 
+              <table id="datatablesBarang" style="width:100%" class="table table-striped table-bordered text-center">
+                  <thead class="text-center">
+                      <tr>
+                          <th>Id User</th>
+                          <th>Nama Lengkap</th>
+                          <th>Username</th>
+                          <th>Role</th>
+                          <th>Toko</th>
+                          <th>Aksi</th>
+                      </tr>
+                  </thead>
+              <% if (users.length > 0) { %>
+                  <tbody class="table-group-divider">
+                      <% users.forEach(function(user, index) { %>
+                          <tr>
+                            <input type="text" hidden id="idData" value="<%= user.id %>" />
+                              <td><%= user.id %></td>
+                              <td><%= user.fullName %></td>
+                              <td><%= user.username %></td>
+                              <td><%= user.role.roleName %></td>
+                              <td><%= user.branch.location %></td>
+                              <td>
+                                <button type="button" class="btn btn-sm btn-primary" 
+                                data-bs-toggle="modal" data-bs-target="#editUserModal" 
+                                data-bs-id="<%=user.id%>" data-bs-branch="<%=user.branchId%>" data-bs-fullName="<%=user.fullName%>"
+                                data-bs-username="<%=user.username%>" data-bs-role="<%=user.roleId%>"
+                                >Edit</button>
+                                <a href="#" onclick="deleteData(`<%= user.id %>`,`/api/auth/delete/`)" class="btn btn-danger btn-sm"
+                                  >Delete</a>
+                              </td>
+                          </tr>
+                      <% }); %>
+                      <% } else { %>
+  
+                      <% } %>
+                  </tbody>
+              </table>
+              <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Edit User</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div id="liveAlertPlaceholder2" role="alert">
+                        </div>
+                         <input type="text" class="form-control" id="edit-id" name="id" hidden>
+                        <div class="mb-2">
+                          <div class="col-sm-1">
+                            <label for="edit-name" class="col-form-label">FullName:</label>
+                          </div>
+                          <input type="text" class="form-control" name="edit-name" id="edit-name">
+                        </div> 
+                        <div class="mb-2">
+                          <div class="row g-1 mt-2">
+                            <div class="col-sm-1">
+                              <label for="edit-username" class="col-form-label">Username:</label>
+                            </div>
+                              <input type="text" class="form-control" name="edit-username" id="edit-username">
+                          </div>
+                        </div>
+                        <div class="mb-2">
+                          <div class="row g-1 mt-2">
+                             <label for="edit-password" class="col-form-label" style="color: red;">(Isi Jika ingin merubah password)</label>
+                            <label for="edit-password" class="col-form-label">Password:</label>
+                            <input type="password" class="form-control" name="password" id="edit-password">
+                          </div>
+                        </div>
+                        <div class="mb-2">
+                          <div class="row g-1 mt-2">
+                            <div class="col-sm-1">
+                              <label for="edit-role" class="col-form-label">Role:</label>
+                            </div>
+                              <select class="form-control" id="edit-role" name="edit-role" required>
+                                <option value="1">Admin</option>
+                                <option value="2">Employee</option>
+                              </select>
+                          </div>
+                        </div>
+                        <div class="mb-2">
+                          <div class="row g-1 mt-2">
+                            <div class="col-sm-1">
+                              <label for="edit-branch" class="col-form-label">Toko:</label>
+                            </div>
+                              <select class="form-control" id="edit-branch" name="branch">
+                                <option value="0">Admin</option>
+                                <option value="1">Cikampek</option>
+                                <option value="2">Klari</option>
+                                <option value="3">Wadas</option>
+                                <option value="4">Tanjung Pura</option>
+                                <option value="5">Rengasdengklok</option>
+                              </select>
+                          </div>
+                        </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" onclick="updateDataUser()" class="btn btn-primary">Update</button>
+                        </div>
+                      </form>
+                  </div>
+                </div>
+              </div>
+              <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="addModalLabel">Register User Baru</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div id="liveAlertPlaceholderAdd" role="alert">
+                        </div>
+                        <div class="mb-2">
+                          <div class="col-sm-1">
+                            <label for="add-name" class="col-form-label">FullName:</label>
+                          </div>
+                            <input type="text" class="form-control" name="fullName" id="add-name">
+                        </div> 
+                        <div class="mb-2">
+                          <div class="col-sm-1">
+                            <label for="add-username" class="col-form-label">Username:</label>
+                          </div>
+                            <input type="text" class="form-control" name="username" id="add-username">
+                        </div> 
+                        <div class="mb-2">
+                          <div class="row g-1 mt-2">
+                            <div class="col-sm-1">
+                              <label for="add-password" class="col-form-label">Password:</label>
+                            </div>
+                            <input type="password" class="form-control" name="password" id="add-password">
+                          </div>
+                        </div>
+                        <div class="mb-2">
+                          <div class="row g-1 mt-2">
+                            <div class="col-sm-1">
+                              <label for="add-branch" class="col-form-label">Toko:</label>
+                            </div>
+                              <select class="form-control" id="add-branch" name="branch">
+                                <option value="1">Cikampek</option>
+                                <option value="2">Klari</option>
+                                <option value="3">Wadas</option>
+                                <option value="4">Tanjung Pura</option>
+                                <option value="5">Rengasdengklok</option>
+                              </select>
+                          </div>
+                        </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" onclick="addDataUser()" class="btn btn-primary">Tambah</button>
+                        </div>
+                      </form>
+                  </div>
+                </div>
+              </div>
+    <%- include('partials/footer') %>
+</body>
+</html>

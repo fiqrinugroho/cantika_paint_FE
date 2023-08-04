@@ -293,6 +293,27 @@ router.get('/dataBarang', async (req, res) => {
       });
 });
 
+router.get('/dataUser', async (req, res) => {
+  const token = req.cookies.token;
+  const branchId = req.cookies.branchId;
+  const branch = req.cookies.branch;
+  const username = req.cookies.username;
+    // Mengambil respons dari API menggunakan Axios
+    await axios.get(`${host}/api/auth/user`,{
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      // Menangani respons
+      res.render('dataUser', { users: response.data.data, branch, branchId, username, token});
+    })
+    .catch(error => {
+        // Menangani kesalahan
+        res.render('dataUser', { users: "", branch, branchId, username, token});
+      });
+});
+
 router.use('/', (req, res) => {
   res.render("404")
 })
