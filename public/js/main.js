@@ -1,4 +1,4 @@
-const host = process.env.HOST;
+const host = "https://cantika-paint-be.onrender.com";
 // const host = "http://localhost:3002";
 
 // fungsi tambah transaksi
