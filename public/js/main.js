@@ -1,4 +1,5 @@
-const host = "http://localhost:3002";
+const host = process.env.HOST;
+// const host = "http://localhost:3002";
 
 // fungsi tambah transaksi
 async function addTransaction() {

@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const axios = require("axios");
 const auth = require("../middlewares/authViews");
-const host = "http://localhost:3002";
+// const host = "http://localhost:3002";
+const host = process.env.HOST;
 
 // dashboard admin
 router.get('/', auth, (req, res) => {
