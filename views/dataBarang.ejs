@@ -31,7 +31,9 @@
                           <th>Jenis</th>
                           <th>Warna</th>
                           <th>Stok</th>
+                          <% if (branchId == 0) { %>
                           <th>Aksi</th>
+                          <% } %>
                       </tr>
                   </thead>
               <% if (items.length > 0) { %>
