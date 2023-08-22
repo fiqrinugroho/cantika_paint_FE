@@ -18,11 +18,11 @@
             <div class="col-md-2">
               <% if (branchId == 0) { %>
                 <select class="form-control" id="branchId" name="branchId" >
-                    <option value="1">Cikampek</option>
-                    <option value="2">Klari</option>
-                    <option value="3">Wadas</option>
-                    <option value="4">Tanjung Pura</option>
-                    <option value="5">Rengasdengklok</option>
+                    <option value="1" >Cikampek</option>
+                    <option value="2" >Klari</option>
+                    <option value="3" >Wadas</option>
+                    <option value="4" >Tanjung Pura</option>
+                    <option value="5" >Rengasdengklok</option>
                 </select>
                 <% } else { %>
                   <select class="form-control" id="branchId" name="branchId" disabled>
@@ -102,7 +102,8 @@
     <script>
       const branchInput = document.getElementById('branchId');
       const branch2Input = document.getElementById('branchId2');
-
+      let i = `<%=id-1%>`
+      branchInput.options[i].selected = true;
       branchInput.addEventListener('change', function() {
           branch2Input.value = branchInput.value;
       });
@@ -111,9 +112,12 @@
 
       // Mendapatkan teks opsi yang dipilih
       const selectedText = branchId2.options[branchId2.selectedIndex].text;
-
+        branch2.value = selectedText;
       // Menampilkan teks yang dipilih pada input
-      branch2.value = selectedText;
+      branchInput.addEventListener('change', function() {
+        const selectedText = branchId2.options[branchId2.selectedIndex].text;
+        branch2.value = selectedText;
+      });
     </script>
     <%- include('partials/footer') %>
 </body>

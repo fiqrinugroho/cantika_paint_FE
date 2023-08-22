@@ -96,6 +96,8 @@ router.get('/penjualan', auth, async (req, res) => {
   let date = req.query.tanggal
   let branchId = req.cookies.branchId
   let branch = req.cookies.branch
+  let id = req.query.branchId
+
   if (!date) {
     date = todayDate();
   }
@@ -111,12 +113,11 @@ router.get('/penjualan', auth, async (req, res) => {
       }
     }).then(response => {
       // Menangani respons
-      res.render('transaction', { transaction: response.data.data, tgl: date, branch, branchId, username });
-
+      res.render('transaction', { transaction: response.data.data, tgl: date, branch, branchId, username, id });
     })
       .catch(error => {
         // Menangani kesalahan
-        res.render('transaction', { transaction: "", tgl: date, branch, branchId, username });
+        res.render('transaction', { transaction: "", tgl: date, branch, branchId, username,id });
       });
   } else {
     await axios.get(`${host}/api/transaction/search`, {
@@ -129,12 +130,12 @@ router.get('/penjualan', auth, async (req, res) => {
       }
     }).then(response => {
       // Menangani respons
-      res.render('transaction', { transaction: response.data.data, tgl: date, branch, branchId, username });
+      res.render('transaction', { transaction: response.data.data, tgl: date, branch, branchId, username, id });
 
     })
       .catch(error => {
         // Menangani kesalahan
-        res.render('transaction', { transaction: "", tgl: date, branch, branchId, username });
+        res.render('transaction', { transaction: "", tgl: date, branch, branchId, username, id });
       });
   }
 });
