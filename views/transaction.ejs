@@ -42,7 +42,7 @@
             <button type="submit" class="btn btn-primary" style="width: 90px;">Lihat</button>
         </form>
         <form action="/penjualan/add" method="post">
-          <input type="text" class="form-control" id="branch2" name="branch2" hidden>
+          <input type="text" class="form-control" id="branch2" name="branch2" value="CIkampek" hidden>
           <% if (branchId == 0) { %>
             <select class="form-control" id="branchId2" name="branchId2" hidden>
               <option value="1">Cikampek</option>
@@ -102,22 +102,22 @@
     <script>
       const branchInput = document.getElementById('branchId');
       const branch2Input = document.getElementById('branchId2');
-      let i = `<%=id-1%>`
-      branchInput.options[i].selected = true;
       branchInput.addEventListener('change', function() {
           branch2Input.value = branchInput.value;
       });
       const branchId2 = document.getElementById('branchId2');
       const branch2 = document.getElementById('branch2');
 
-      // Mendapatkan teks opsi yang dipilih
-      const selectedText = branchId2.options[branchId2.selectedIndex].text;
-        branch2.value = selectedText;
       // Menampilkan teks yang dipilih pada input
       branchInput.addEventListener('change', function() {
         const selectedText = branchId2.options[branchId2.selectedIndex].text;
         branch2.value = selectedText;
       });
+        let i = '<%=id-1%>'
+        branchInput.options[i].selected = true;
+        branch2Input.options[i].selected = true;
+        const selectedText = branchId2.options[branchId2.selectedIndex].text;
+        branch2.value = selectedText;
     </script>
     <%- include('partials/footer') %>
 </body>
