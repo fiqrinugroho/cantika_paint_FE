@@ -1,7 +1,7 @@
 const host = "https://cantika-paint-be.onrender.com";
 // const host = "http://localhost:3002";
 
-// fungsi tambah transaksi
+// fungsi tambah penjualan
 async function addTransaction() {
   const token = document.getElementById("token").value
 
@@ -69,7 +69,7 @@ async function addShipment() {
     branchId: document.getElementById("branchId").value,
   };
 
-  if (data.itemId == "" || data.out == "") {
+  if (data.itemId == "" || data.add == "") {
     appendAlert('Data Tidak Boleh Kosong', 'danger')
   } else {
     await axios.post(`${host}/api/shipment/add`, data, {
