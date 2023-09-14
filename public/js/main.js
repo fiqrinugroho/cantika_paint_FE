@@ -202,6 +202,7 @@ async function addDataUser() {
   });
   const data = {
     branchId: document.getElementById("add-branch").value,
+    roleId: document.getElementById("add-role").value,
     fullName: document.getElementById("add-name").value,
     username: document.getElementById("add-username").value,
     password: document.getElementById("add-password").value,
